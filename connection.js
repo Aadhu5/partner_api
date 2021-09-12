@@ -6,16 +6,15 @@ const mysql = require("mysql");
         database : "partner_5",
         multipleStatements : true
 }); */
-/*var mysqlConnection = mysql.createConnection({
-        host : "partner-db-do-user-9740444-0.b.db.ondigitalocean.com",
-        user : "doadmin",
-        password : "KAla7QPL-vRVwdtj",
-        database : "defaultdb",
-        multipleStatements : true,
-        sslmode = 'REQUIRED'
-});*/
-
 var mysqlConnection = mysql.createConnection({
+        host : "localhost",
+        user : "admin",
+        password : "0bf21657ee60f102b7fc57068038c74a266fc88c1071c8e4",
+        database : "partner_api_db",
+        multipleStatements : true
+});
+
+/*var mysqlConnection = mysql.createConnection({
         host : "143.244.141.118",
         user : "server_app",
         password : "0a86fef948494bae11c9557f8827db763d66acd4f62b4dce",
@@ -24,9 +23,9 @@ var mysqlConnection = mysql.createConnection({
         multipleStatements:true,
         queryTimeout: 66000,
         connectTimeout: 66000
-}); 
+}); */
 
-/*var mysqlConnection = mysql.createConnection({
+/*var mysqlConnection = mysql.createConnection({ 
         host : "my-db-part-do-user-9740444-0.b.db.ondigitalocean.com",
         user : "doadmin",
         password : "JaPXrhHYtbsmHKqz",
