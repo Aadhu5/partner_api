@@ -9,7 +9,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/", apiRoutes);
-app.use("/api/checkExist", apiRoutes);
 app.use("/api/insert_from", apiRoutes);
 app.use("/api/new_request", apiRoutes);
 app.use("/api/req_details", apiRoutes);
