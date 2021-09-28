@@ -7,6 +7,25 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+/***************************************************************CHECK EXIST */
+router.get('/api/checkExist/:fr_add/:to_add', (req, res) => {
+  var qry_1 = 'SELECT COUNT(*) AS ac_count FROM block_data WHERE fr_add = ? AND to_add = ?';
+  mysqlconn.query(qry_1, [req.params.fr_add, req.params.to_add], (err, rows, fields) => {
+      if(!err)
+      {
+        if(rows[0].ac_count>=1)
+        {
+          json = [{ isExist : true }];
+        } else {
+          json = [{ isExist : false }];
+        }
+        output = { status : '0', message : 'Data fetching success', data : json };
+      } else {
+        output = { status : '1', message : err};
+      }
+      res.send(output);
+  })
+});
 /***************************************************************INSERT DETAILS */
 router.post('/api/insert_from', (req, res) => {
   let ins = req.body;
@@ -27,19 +46,28 @@ router.post('/api/insert_from', (req, res) => {
 });
 /***************************************************************SELECT REQ */
 router.get('/api/new_request/:address/:status', (req, res) => {
-  if(req.params.status=='0')
-  {
-    var qry_3 = 'SELECT * FROM block_data WHERE to_add = ? AND status = ?';
-  } else {
-    var qry_3 = 'SELECT * FROM block_data WHERE fr_add = ? AND status = ?';
-  }
+  var qry_3 = 'SELECT * FROM block_data WHERE to_add = ? AND status = ?';
   mysqlconn.query(qry_3, [req.params.address, req.params.status], (err, rows, fields) => {
     if(!err)
     {
       json = [{ list : rows }];
       output = { status : '0', message : 'List is ready', data : json };
     } else {
-      output = { status : '1', message : err};
+      output = { status : '1', message : 'Server side error, Do after some hours'};
+    }
+    res.send(output);
+  })
+});
+/***************************************************************ACCEPT REQ */
+router.get('/api/accept_request/:address/:status', (req, res) => {
+  var qry_3 = 'SELECT * FROM block_data WHERE to_add = ? AND status = ? OR fr_add = ?';
+  mysqlconn.query(qry_3, [req.params.address, req.params.status, req.params.address], (err, rows, fields) => {
+    if(!err)
+    {
+      json = [{ list : rows }];
+      output = { status : '0', message : 'List is ready', data : json };
+    } else {
+      output = { status : '1', message : 'Server side error, Do after some hours', data : err};
     }
     res.send(output);
   })
@@ -53,7 +81,7 @@ router.get('/api/req_details/:id', (req, res) => {
       json = [{ details : rows }];
       output = { status : '0', message : 'Details are ready', data : json };
     } else {
-      output = { status : '1', message : err};
+      output = { status : '1', message : 'Server side error, Do after some hours'};
     }
     res.send(output);
   })
@@ -61,13 +89,13 @@ router.get('/api/req_details/:id', (req, res) => {
 /***************************************************************ACCEPT REQ */
 router.post('/api/req_accept', (req, res) => {
   let upd = req.body;
-  var qry_5 = "UPDATE block_data SET to_hash =? , to_time =? , replay =? , status =?  WHERE id = ?";
-  mysqlconn.query(qry_5, [upd.to_hash, upd.to_time, upd.replay, upd.status, upd.req_id], (err, rows, fields) => {
+  var qry_5 = "UPDATE block_data SET to_hash =? , to_time =? , status =?  WHERE id = ?";
+  mysqlconn.query(qry_5, [upd.to_hash, upd.to_time, upd.status, upd.req_id], (err, rows, fields) => {
       if(!err)
       {
         output = { status : '0', message : 'Details are updated'};
       } else {
-        output = { status : '1', message : err};
+        output = { status : '1', message : 'Server side error, Do after some hours'};
       }
       res.send(output);
   })
@@ -80,10 +108,10 @@ router.get('/api/req_ignore/:status/:req_id', (req, res) => {
       {
         output = { status : '0', message : 'Request rejected successfully'};
       } else {
-        output = { status : '1', message : err};
+        output = { status : '1', message : 'Server side error, Do after some hours'};
       }
       res.send(output);
   })
 });
-/***************************************************************END */
+/*************************************************************** */
 module.exports = router;

@@ -17,4 +17,4 @@ app.use("/api/req_accept", apiRoutes);
 app.use("/api/req_ignore", apiRoutes);
 app.use("/api/accept_request", apiRoutes);
 
-app.listen(3000);
+app.listen(3010);

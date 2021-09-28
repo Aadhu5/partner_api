@@ -1,15 +1,15 @@
 const mysql = require("mysql");
 var mysqlConnection = mysql.createConnection({
         host : "localhost",
-        user : "partner_user",
-        password : "partner_pass",
-        database : "partner_api_db",
+        user : "root",
+        password : "",
+        database : "partner_5",
         multipleStatements : true
 });
 mysqlConnection.connect((err)=>{
         if(!err)
         {
-                console.log("Connected");
+                //console.log("Connected");
         } else {
                 console.log(err);
         }        
